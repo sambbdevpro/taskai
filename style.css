@@ -49,10 +49,36 @@ body {
     top: 0;
     z-index: 100;
 }
-.header-left { display: flex; align-items: baseline; gap: 12px; }
+.header-left { display: flex; align-items: center; gap: 12px; }
 .header h1 { font-size: 1.4rem; font-weight: 700; }
-.subtitle { color: var(--text-secondary); font-size: 0.85rem; }
+.subtitle { color: var(--text-secondary); font-size: 0.85rem; margin-left: 8px; }
 .header-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+/* ===== Refresh Button ===== */
+.refresh-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    font-size: 1.2rem;
+    margin-left: 12px;
+}
+.refresh-btn:hover {
+    background: var(--bg-hover);
+    color: var(--text);
+    transform: rotate(180deg);
+    border-color: var(--accent);
+}
+.refresh-btn:active {
+    transform: scale(0.95);
+}
 
 /* ===== Filter Buttons ===== */
 .filter-group { display: flex; gap: 4px; flex-wrap: wrap; }
@@ -366,13 +392,11 @@ form { padding: 20px; }
     font-size: 0.8rem;
     color: var(--text-secondary);
     margin-bottom: 16px;
-    display: flex;
-    gap: 20px;
+    display: flex;\n    gap: 20px;
 }
 .detail-actions { display: flex; gap: 8px; }
 .btn-edit {
-    padding: 8px 16px;
-    background: var(--accent);
+    padding: 8px 16px;\n    background: var(--accent);
     color: white;
     border: none;
     border-radius: var(--radius-sm);
@@ -399,13 +423,11 @@ form { padding: 20px; }
 }
 
 /* ===== Responsive ===== */
-@media (max-width: 1024px) {
-    .board {
+@media (max-width: 1024px) {\n    .board {
         grid-template-columns: repeat(2, 1fr);
     }
 }
-@media (max-width: 640px) {
-    .board {
+@media (max-width: 640px) {\n    .board {
         grid-template-columns: 1fr;
         padding: 12px;
     }
