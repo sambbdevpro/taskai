@@ -131,7 +131,7 @@ async function updateTask(id, data) {
 
 async function deleteTask(id) {
     // Optimistic update
-    const oldTasks = [...tasks];
+const oldTasks = [...tasks];
     tasks = tasks.filter(t => t.id !== id);
     renderBoard();
     
@@ -254,7 +254,7 @@ function getTimeAgo(dateStr) {
     if (diff < 60) return 'Vừa xong';
     if (diff < 3600) return `${Math.floor(diff / 60)}p trước`;
     if (diff < 86400) return `${Math.floor(diff / 3600)}h trước`;
-    if (diff < 604800) return `${Math.floor(diff / 86400)}d trước`;
+if (diff < 604800) return `${Math.floor(diff / 86400)}d trước`;
     return date.toLocaleDateString('vi-VN');
 }
 
@@ -363,7 +363,7 @@ function openModal(taskId) {
     }
     
     modal.classList.add('show');
-    setTimeout(() => document.getElementById('task-title').focus(), 100);
+setTimeout(() => document.getElementById('task-title').focus(), 100);
 }
 
 function closeModal() {
@@ -390,7 +390,8 @@ function handleSubmit(e) {
     
     if (id) {
         updateTask(id, data);
-    } else {\n        createTask(data);
+    } else {
+        createTask(data);
     }
     
     closeModal();
