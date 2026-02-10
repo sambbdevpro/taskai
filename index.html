@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Team AI Task Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <h1>🎯 Team AI Dashboard</h1>
+            <span class="subtitle">Task Management</span>
+        </div>
+        <div class="header-right">
+            <div class="filter-group">
+                <button class="filter-btn active" data-filter="all">Tất cả</button>
+                <button class="filter-btn" data-filter="kate">💃 Kate</button>
+                <button class="filter-btn" data-filter="mira">🔍 Mira</button>
+                <button class="filter-btn" data-filter="kaka">👾 Kaka</button>
+                <button class="filter-btn" data-filter="personal">👤 Cá nhân</button>
+            </div>
+            <button class="btn-add" onclick="openModal()">+ Thêm Task</button>
+        </div>
+    </header>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+        <div class="stat">
+            <span class="stat-number" id="stat-total">0</span>
+            <span class="stat-label">Tổng</span>
+        </div>
+        <div class="stat">
+            <span class="stat-number stat-new" id="stat-new">0</span>
+            <span class="stat-label">Mới</span>
+        </div>
+        <div class="stat">
+            <span class="stat-number stat-working" id="stat-working">0</span>
+            <span class="stat-label">Đang làm</span>
+        </div>
+        <div class="stat">
+            <span class="stat-number stat-completed" id="stat-completed">0</span>
+            <span class="stat-label">Hoàn thành</span>
+        </div>
+        <div class="stat">
+            <span class="stat-number stat-recheck" id="stat-recheck">0</span>
+            <span class="stat-label">Recheck</span>
+        </div>
+    </div>
+
+    <!-- Kanban Board -->
+    <div class="board">
+        <!-- New Task Column -->
+        <div class="column" data-status="new">
+            <div class="column-header">
+                <div class="column-title">
+                    <span class="column-icon">📥</span>
+                    <h2>New Task</h2>
+                    <span class="task-count" id="count-new">0</span>
+                </div>
+            </div>
+            <div class="task-list" id="list-new" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+            </div>
+        </div>
+
+        <!-- Working Column -->
+        <div class="column" data-status="working">
+            <div class="column-header working">
+                <div class="column-title">
+                    <span class="column-icon">🔨</span>
+                    <h2>Working</h2>
+                    <span class="task-count" id="count-working">0</span>
+                </div>
+            </div>
+            <div class="task-list" id="list-working" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+            </div>
+        </div>
+
+        <!-- Completed Column -->
+        <div class="column" data-status="completed">
+            <div class="column-header completed">
+                <div class="column-title">
+                    <span class="column-icon">✅</span>
+                    <h2>Completed</h2>
+                    <span class="task-count" id="count-completed">0</span>
+                </div>
+            </div>
+            <div class="task-list" id="list-completed" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+            </div>
+        </div>
+
+        <!-- Recheck Column -->
+        <div class="column" data-status="recheck">
+            <div class="column-header recheck">
+                <div class="column-title">
+                    <span class="column-icon">🔄</span>
+                    <h2>Recheck</h2>
+                    <span class="task-count" id="count-recheck">0</span>
+                </div>
+            </div>
+            <div class="task-list" id="list-recheck" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Task Modal -->
+    <div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">Thêm Task Mới</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="task-form" onsubmit="handleSubmit(event)">
+                <input type="hidden" id="task-id">
+                <div class="form-group">
+                    <label>Tiêu đề *</label>
+                    <input type="text" id="task-title" required placeholder="Tên task...">
+                </div>
+                <div class="form-group">
+                    <label>Mô tả</label>
+                    <textarea id="task-desc" rows="3" placeholder="Chi tiết task..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Giao cho</label>
+                        <select id="task-assignee">
+                            <option value="kate">💃 Kate</option>
+                            <option value="mira">🔍 Mira</option>
+                            <option value="kaka">👾 Kaka</option>
+                            <option value="personal">👤 Cá nhân</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Độ ưu tiên</label>
+                        <select id="task-priority">
+                            <option value="low">🟢 Thấp</option>
+                            <option value="medium" selected>🟡 Trung bình</option>
+                            <option value="high">🔴 Cao</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <select id="task-status">
+                        <option value="new">📥 New Task</option>
+                        <option value="working">🔨 Working</option>
+                        <option value="completed">✅ Completed</option>
+                        <option value="recheck">🔄 Recheck</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Hủy</button>
+                    <button type="submit" class="btn-save">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Task Detail Modal -->
+    <div class="modal-overlay" id="detail-modal" onclick="closeDetailOutside(event)">
+        <div class="modal detail-modal">
+            <div class="modal-header">
+                <h3 id="detail-title">Chi tiết Task</h3>
+                <button class="modal-close" onclick="closeDetail()">&times;</button>
+            </div>
+            <div class="detail-body">
+                <div class="detail-meta">
+                    <span class="detail-assignee" id="detail-assignee"></span>
+                    <span class="detail-priority" id="detail-priority"></span>
+                    <span class="detail-status" id="detail-status"></span>
+                </div>
+                <div class="detail-desc" id="detail-desc"></div>
+                <div class="detail-dates">
+                    <div><strong>Tạo:</strong> <span id="detail-created"></span></div>
+                    <div><strong>Cập nhật:</strong> <span id="detail-updated"></span></div>
+                </div>
+                <div class="detail-actions">
+                    <button class="btn-edit" onclick="editFromDetail()">✏️ Sửa</button>
+                    <button class="btn-delete" onclick="deleteFromDetail()">🗑️ Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
