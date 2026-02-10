@@ -1,5 +1,5 @@
 // ===== CONFIG =====
-// Link API Apps Script v2
+// Link API Apps Script v2 (Thay URL của anh vào đây)
 const API_URL = 'https://script.google.com/macros/s/AKfycbzfbnathUa7K65z91TFBj6-q6VXiW74UY-RruNReWitLIGYymvwEnZrvh2v8hDaU-Ey/exec';
 
 // ===== STATE =====
@@ -15,8 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
     setupFilters();
     setupKeyboard();
     
-    // Auto refresh every 5 minutes
-    setInterval(loadTasks, 5 * 60 * 1000);
+    // Auto refresh every 30 seconds (fix: cache busting via timestamp)
+    setInterval(loadTasks, 30 * 1000);
+
+    // Refresh button
+    const refreshBtn = document.createElement('button');
+    refreshBtn.innerHTML = '🔄';
+    refreshBtn.className = 'refresh-btn';
+    refreshBtn.title = 'Làm mới dữ liệu';
+    refreshBtn.onclick = loadTasks;
+    document.querySelector('.header').appendChild(refreshBtn);
 });
 
 // ===== API CALLS =====
@@ -24,9 +32,10 @@ async function apiCall(params) {
     isLoading = true;
     updateLoadingState();
     
-    // Convert params to query string
+    // Add timestamp to prevent caching
     const url = new URL(API_URL);
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+    url.searchParams.append('_t', Date.now()); // Cache buster
     
     try {
         const res = await fetch(url);
@@ -381,8 +390,7 @@ function handleSubmit(e) {
     
     if (id) {
         updateTask(id, data);
-    } else {
-        createTask(data);
+    } else {\n        createTask(data);
     }
     
     closeModal();
