@@ -1,6 +1,6 @@
 // ===== CONFIG =====
 // Link API Apps Script v2 (Thay URL của anh vào đây)
-const API_URL = 'https://script.google.com/macros/s/AKfycbzfbnathUa7K65z91TFBj6-q6VXiW74UY-RruNReWitLIGYymvwEnZrvh2v8hDaU-Ey/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbzUzOE-vfzKVFMewP8rhKAsu0_LSrJomYT6FKe6IjTF8p_W8nnH5WZxqL_YStDTzN-v/exec';
 
 // ===== STATE =====
 let tasks = [];
